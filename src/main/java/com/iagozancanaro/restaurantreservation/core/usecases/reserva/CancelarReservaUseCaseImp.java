@@ -1,8 +1,10 @@
 package com.iagozancanaro.restaurantreservation.core.usecases.reserva;
 
+import com.iagozancanaro.restaurantreservation.core.entities.Reserva;
+
 public class CancelarReservaUseCaseImp implements CancelarReservaUseCase {
     @Override
-    public void execute(Long id) {
-
+    public Reserva execute(Long id) {
+        return null;
     }
 }
