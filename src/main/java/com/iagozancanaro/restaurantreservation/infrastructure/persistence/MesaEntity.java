@@ -30,7 +30,7 @@ public class MesaEntity {
     @JoinColumn(name = "restaurante_id", nullable = false)
     private RestauranteEntity restaurante;
 
-    @OneToMany
+    @OneToMany(mappedBy = "mesa")
     private List<ReservaEntity> reservas;
 
 }
