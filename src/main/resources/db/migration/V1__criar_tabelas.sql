@@ -2,7 +2,7 @@ CREATE TABLE restaurante (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     endereco VARCHAR(255) NOT NULL,
-    telefone VARCHAR(50) NO NULL,
+    telefone VARCHAR(50) NOT NULL,
     capacidade_total INTEGER NOT NULL
 );
 
@@ -10,7 +10,7 @@ CREATE TABLE cliente (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    telefone VARCHAR(50) NO NULL
+    telefone VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE mesa (
