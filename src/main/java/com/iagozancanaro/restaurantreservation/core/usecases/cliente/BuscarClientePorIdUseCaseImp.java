@@ -1,10 +1,8 @@
 package com.iagozancanaro.restaurantreservation.core.usecases.cliente;
 
 import com.iagozancanaro.restaurantreservation.core.entities.Cliente;
-import com.iagozancanaro.restaurantreservation.core.exceptions.NotFoundClientException;
+import com.iagozancanaro.restaurantreservation.core.exceptions.NotFoundException;
 import com.iagozancanaro.restaurantreservation.core.gateway.ClienteGateway;
-
-import java.util.Optional;
 
 public class BuscarClientePorIdUseCaseImp implements BuscarClientePorIdUseCase {
 
@@ -16,7 +14,7 @@ public class BuscarClientePorIdUseCaseImp implements BuscarClientePorIdUseCase {
 
     @Override
     public Cliente execute(Long id) {
-        return clienteGateway.buscarPorId(id).
-                orElseThrow(() -> new NotFoundClientException("Client com ID " + id + " não encontrado"));
+        return clienteGateway.buscarPorId(id)
+                .orElseThrow(() -> new NotFoundException("Cliente com ID " + id + " não encontrado"));
     }
 }
