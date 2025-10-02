@@ -8,4 +8,10 @@ public record Reserva(Long id,
                       LocalDateTime dataHora,
                       Long clienteId,
                       Long mesaId,
-                      StatusReserva status) {}
+                      StatusReserva status) {
+
+    public Reserva comStatus(StatusReserva novoStatus) {
+        return new Reserva(id, dataHora, clienteId, mesaId, novoStatus);
+    }
+
+}

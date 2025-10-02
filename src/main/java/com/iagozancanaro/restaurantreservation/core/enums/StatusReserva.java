@@ -1,7 +1,7 @@
 package com.iagozancanaro.restaurantreservation.core.enums;
 
 public enum StatusReserva {
-    ATIVA,
+    CONFIRMADA,
     CANCELADA,
     CONCLUIDA
 }
