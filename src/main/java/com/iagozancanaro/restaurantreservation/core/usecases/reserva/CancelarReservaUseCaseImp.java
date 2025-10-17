@@ -35,6 +35,7 @@ public class CancelarReservaUseCaseImp implements CancelarReservaUseCase {
         // Libera a mesa
         atualizarStatusMesaUseCase.execute(reserva.mesaId(), StatusMesa.LIVRE);
 
-        return reservaGateway.salvar(reservaCancelada);
+        return reservaGateway.salvar(reserva, reserva.clienteId(), reserva.mesaId());
+
     }
 }

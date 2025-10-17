@@ -29,4 +29,9 @@ public class ClienteRepositoryGateway implements ClienteGateway {
         return clienteRepository.findById(id)
                 .map(clienteEntityMapper::toDomain);
     }
+
+    @Override
+    public Optional<ClienteEntity> buscarEntityPorId(Long id) {
+        return clienteRepository.findById(id);
+    }
 }

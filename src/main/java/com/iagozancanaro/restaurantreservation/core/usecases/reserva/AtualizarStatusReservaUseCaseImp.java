@@ -29,7 +29,7 @@ public class AtualizarStatusReservaUseCaseImp implements AtualizarStatusReservaU
         Reserva reserva = reservaGateway.buscarPorId(id)
                 .orElseThrow(() -> new NotFoundException("Reserva com o Id " +id+ " não encontrada"));
 
-        Mesa mesa = mesaGateway.buscarPorId(id)
+        Mesa mesa = mesaGateway.buscarPorId(reserva.mesaId())
                 .orElseThrow(() -> new NotFoundException("Mesa com o Id " +reserva.mesaId()+ " não encontrada"));
 
         // Atualizar conforme o novo status
@@ -46,6 +46,6 @@ public class AtualizarStatusReservaUseCaseImp implements AtualizarStatusReservaU
 
         // Atualizar status da reserva
         Reserva reservaAtualizada = reserva.comStatus(status);
-        return reservaGateway.salvar(reservaAtualizada);
+        return reservaGateway.salvar(reserva, reserva.clienteId(), reserva.mesaId());
     }
 }

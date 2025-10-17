@@ -1,5 +1,6 @@
 package com.iagozancanaro.restaurantreservation.infrastructure.persistence;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.iagozancanaro.restaurantreservation.core.enums.StatusMesa;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class MesaEntity {
     private RestauranteEntity restaurante;
 
     @OneToMany(mappedBy = "mesa")
+    @JsonIgnore
     private List<ReservaEntity> reservas;
 
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,6 @@ public class RestauranteEntity {
     private String telefone;
     private Integer capacidadeTotal;
 
-    @OneToMany(mappedBy = "restaurante")
-    private List<MesaEntity> mesas;
+    @OneToMany(mappedBy = "restaurante", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MesaEntity> mesas = new ArrayList<>();
 }

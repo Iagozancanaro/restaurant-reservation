@@ -1,6 +1,5 @@
 package com.iagozancanaro.restaurantreservation.core.usecases.reserva;
 
-import com.iagozancanaro.restaurantreservation.core.entities.Mesa;
 import com.iagozancanaro.restaurantreservation.core.entities.Reserva;
 import com.iagozancanaro.restaurantreservation.core.enums.StatusMesa;
 import com.iagozancanaro.restaurantreservation.core.enums.StatusReserva;
@@ -10,6 +9,8 @@ import com.iagozancanaro.restaurantreservation.core.gateway.ClienteGateway;
 import com.iagozancanaro.restaurantreservation.core.gateway.MesaGateway;
 import com.iagozancanaro.restaurantreservation.core.gateway.ReservaGateway;
 import com.iagozancanaro.restaurantreservation.core.usecases.mesa.AtualizarStatusMesaUseCase;
+import com.iagozancanaro.restaurantreservation.infrastructure.persistence.ClienteEntity;
+import com.iagozancanaro.restaurantreservation.infrastructure.persistence.MesaEntity;
 
 public class CriarReservaUseCaseImp implements CriarReservaUseCase {
 
@@ -27,23 +28,22 @@ public class CriarReservaUseCaseImp implements CriarReservaUseCase {
 
     @Override
     public Reserva execute(Reserva reserva) {
-        //Buscar cliente
-        clienteGateway.buscarPorId(reserva.clienteId())
-                .orElseThrow(() -> new NotFoundException("Cliente com o Id " +reserva.clienteId()+ " , não encontrado."));
+        // Buscar cliente e guardar em uma variável
+        ClienteEntity clienteEntity = clienteGateway.buscarEntityPorId(reserva.clienteId())
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
-        //Buscar mesa e validar disponibilidade
-        Mesa mesa = mesaGateway.buscarPorId(reserva.mesaId())
-                .orElseThrow(() -> new NotFoundException("Mesa com o Id " +reserva.mesaId()+ " , não encontrada."));
+        // Buscar mesa e validar disponibilidade
+        MesaEntity mesaEntity = mesaGateway.buscarEntityPorId(reserva.mesaId())
+                .orElseThrow(() -> new NotFoundException("Mesa não encontrada."));
 
-        if (!StatusMesa.LIVRE.equals(mesa.status())) {
-            throw new MesaNotAvailableException("Mesa " +mesa.numero() + " não esta disponível.");
+        if (!StatusMesa.LIVRE.equals(mesaEntity.getStatus())) {
+            throw new MesaNotAvailableException("Mesa " + mesaEntity.getNumero() + " não está disponível.");
         }
-        //Atualiza status da mesa
-        atualizarStatusMesaUseCase.execute(mesa.id(), StatusMesa.RESERVADA);
 
-        //Define status da reserva
+        // Atualiza status da mesa
+        atualizarStatusMesaUseCase.execute(mesaEntity.getId(), StatusMesa.RESERVADA);
         Reserva reservaConfirmada = reserva.comStatus(StatusReserva.CONFIRMADA);
 
-        return reservaGateway.salvar(reservaConfirmada);
+        return reservaGateway.salvar(reservaConfirmada, reserva.clienteId(), reserva.mesaId());
     }
 }

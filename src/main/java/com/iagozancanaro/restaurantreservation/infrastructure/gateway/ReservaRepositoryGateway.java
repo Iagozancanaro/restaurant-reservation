@@ -4,8 +4,7 @@ import com.iagozancanaro.restaurantreservation.core.entities.Reserva;
 import com.iagozancanaro.restaurantreservation.core.enums.StatusReserva;
 import com.iagozancanaro.restaurantreservation.core.gateway.ReservaGateway;
 import com.iagozancanaro.restaurantreservation.infrastructure.mappers.ReservaEntityMapper;
-import com.iagozancanaro.restaurantreservation.infrastructure.persistence.ReservaEntity;
-import com.iagozancanaro.restaurantreservation.infrastructure.persistence.ReservaRepository;
+import com.iagozancanaro.restaurantreservation.infrastructure.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +17,20 @@ public class ReservaRepositoryGateway implements ReservaGateway {
 
     private final ReservaRepository reservaRepository;
     private final ReservaEntityMapper reservaEntityMapper;
+    private final ClienteRepository clienteRepository;
+    private final MesaRepository mesaRepository;
 
     @Override
-    public Reserva salvar(Reserva reserva) {
+    public Reserva salvar(Reserva reserva, Long clienteId, Long mesaId) {
+        ClienteEntity clienteEntity = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        MesaEntity mesaEntity = mesaRepository.findById(mesaId)
+                .orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
+
         ReservaEntity entity = reservaEntityMapper.toEntity(reserva);
+        entity.setCliente(clienteEntity);
+        entity.setMesa(mesaEntity);
+
         ReservaEntity novaReserva = reservaRepository.save(entity);
         return reservaEntityMapper.toDomain(novaReserva);
     }

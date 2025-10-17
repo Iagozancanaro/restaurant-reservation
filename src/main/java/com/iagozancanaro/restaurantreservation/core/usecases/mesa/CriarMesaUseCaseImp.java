@@ -20,6 +20,6 @@ public class CriarMesaUseCaseImp implements CriarMesaUseCase {
         }
         Mesa mesaComStatus = mesa.comStatus(StatusMesa.LIVRE);
 
-        return mesaGateway.salvar(mesa);
+        return mesaGateway.salvar(mesaComStatus);
     }
 }
